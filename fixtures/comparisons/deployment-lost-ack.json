@@ -39,7 +39,7 @@
       "verify-before-repeat-write"
     ],
     "label": "Production deployed. The control plane timed out.",
-    "number": "03",
+    "number": "02",
     "operation": {
       "commitTitle": "Production deployment starts",
       "effectLabel": "deployment",

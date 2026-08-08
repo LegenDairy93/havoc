@@ -39,7 +39,7 @@
       "verify-before-repeat-write"
     ],
     "label": "The issue was created. GitHub looked offline.",
-    "number": "02",
+    "number": "01",
     "operation": {
       "commitTitle": "GitHub issue is created",
       "effectLabel": "issue",

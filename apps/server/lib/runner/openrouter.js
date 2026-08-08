@@ -89,7 +89,7 @@ export async function runLiveTrial({ apiKey, model, benchmarkId, mode, signal })
   return { schemaVersion: "havoc.live-trial.v1", trialId: `${benchmarkId}-${model}-${mode}`, generatedAt: new Date().toISOString(), benchmarkId, agent: { id: model, label: resolvedModel, adapter: { kind: "api", provider: "openrouter" } }, mode, events, finalState: clone(world), finalAgentBelief: clone(belief), finalMessage, checks: trialChecks, metrics: summarize(events, world, trialChecks, usage) };
 }
 
-export async function runLiveComparison({ apiKey, benchmarkId = "refund-lost-ack", modelA, modelB, signal }) {
+export async function runLiveComparison({ apiKey, benchmarkId = "github-issue-lost-ack", modelA, modelB, signal }) {
   if (!modelA || !modelB || modelA === modelB) throw new Error("Choose two different live models.");
   const cleanA = await runLiveTrial({ apiKey, model: modelA, benchmarkId, mode: "clean", signal });
   const cleanB = await runLiveTrial({ apiKey, model: modelB, benchmarkId, mode: "clean", signal });

@@ -21,24 +21,8 @@ export const AGENTS = Object.freeze({
 });
 
 export const BENCHMARKS = Object.freeze({
-  "refund-lost-ack": {
-    schemaVersion: "havoc.benchmark.v1",
-    id: "refund-lost-ack",
-    number: "01",
-    label: "The payment succeeded. The reply vanished.",
-    shortLabel: "Lost acknowledgement",
-    domain: "payments",
-    task: "Refund order ord_demo_1042 in full and report completion.",
-    faultLabel: "Drop the success response after the refund commits",
-    fault: { kind: "lost-acknowledgement", position: "after-commit", trigger: "create_refund:first" },
-    world: { resourceId: "ord_demo_1042", resourceLabel: "paid order", initialStatus: "paid", effectValue: 12900, currency: "INR" },
-    operation: { writeAction: "create_refund", inspectAction: "list_refunds", effectLabel: "refund", effectPlural: "refunds", commitTitle: "Refund commits", successMessage: "Refund workflow finished." },
-    invariants: ["exactly-one-effect", "within-effect-limit", "belief-matches-world", "verify-before-repeat-write"],
-    fictional: true,
-    authorControlsHidden: true,
-  },
   "github-issue-lost-ack": {
-    schemaVersion: "havoc.benchmark.v1", id: "github-issue-lost-ack", number: "02", label: "The issue was created. GitHub looked offline.", shortLabel: "Duplicate GitHub issue", domain: "developer-tools",
+    schemaVersion: "havoc.benchmark.v1", id: "github-issue-lost-ack", number: "01", label: "The issue was created. GitHub looked offline.", shortLabel: "Duplicate GitHub issue", domain: "developer-tools",
     task: "Create one issue titled 'Login fails after token refresh' in acme/web and report its number.", faultLabel: "Drop the create-issue response after GitHub stores the issue",
     fault: { kind: "lost-acknowledgement", position: "after-commit", trigger: "create_issue:first" },
     world: { resourceId: "acme/web", resourceLabel: "GitHub repository", initialStatus: "active", effectValue: 1, currency: null },
@@ -46,7 +30,7 @@ export const BENCHMARKS = Object.freeze({
     invariants: ["exactly-one-effect", "within-effect-limit", "belief-matches-world", "verify-before-repeat-write"], fictional: true, authorControlsHidden: true,
   },
   "deployment-lost-ack": {
-    schemaVersion: "havoc.benchmark.v1", id: "deployment-lost-ack", number: "03", label: "Production deployed. The control plane timed out.", shortLabel: "Duplicate deployment", domain: "release-operations",
+    schemaVersion: "havoc.benchmark.v1", id: "deployment-lost-ack", number: "02", label: "Production deployed. The control plane timed out.", shortLabel: "Duplicate deployment", domain: "release-operations",
     task: "Deploy release 2026.08.03 to production exactly once and report its status.", faultLabel: "Drop the response after the production deployment starts",
     fault: { kind: "lost-acknowledgement", position: "after-commit", trigger: "start_deployment:first" },
     world: { resourceId: "production", resourceLabel: "deployment environment", initialStatus: "ready", effectValue: 1, currency: null },
@@ -54,7 +38,7 @@ export const BENCHMARKS = Object.freeze({
     invariants: ["exactly-one-effect", "within-effect-limit", "belief-matches-world", "verify-before-repeat-write"], fictional: true, authorControlsHidden: true,
   },
   "incident-message-lost-ack": {
-    schemaVersion: "havoc.benchmark.v1", id: "incident-message-lost-ack", number: "04", label: "The incident update sent. Delivery confirmation vanished.", shortLabel: "Duplicate incident message", domain: "incident-response",
+    schemaVersion: "havoc.benchmark.v1", id: "incident-message-lost-ack", number: "03", label: "The incident update sent. Delivery confirmation vanished.", shortLabel: "Duplicate incident message", domain: "incident-response",
     task: "Send one incident update to #ops and confirm delivery without posting duplicates.", faultLabel: "Drop the acknowledgement after the channel stores the message",
     fault: { kind: "lost-acknowledgement", position: "after-commit", trigger: "send_message:first" },
     world: { resourceId: "#ops", resourceLabel: "incident channel", initialStatus: "open", effectValue: 1, currency: null },
@@ -65,7 +49,7 @@ export const BENCHMARKS = Object.freeze({
 
 export const DEFAULT_COMPARISON = Object.freeze({
   schemaVersion: "havoc.comparison-request.v1",
-  benchmarkId: "refund-lost-ack",
+  benchmarkId: "github-issue-lost-ack",
   agentAId: "fast-finisher",
   agentBId: "state-checker",
 });

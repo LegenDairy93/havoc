@@ -8,7 +8,7 @@ failure.**
 
 ## The question it explores
 
-Your agent calls a tool that commits — a deploy, a refund, a transfer. The write
+Your agent calls a tool that commits — a deploy, an issue, an incident post. The write
 lands. Then the response is lost on the way back, so the agent never learns it
 worked.
 
@@ -32,8 +32,8 @@ what actually happened to external state
 Idempotency is not a property of the infrastructure. It is a property of **correct
 client behavior**. The platform provides the mechanism; the caller still has to use
 it — reuse the key across retries, pin the same target, check state before writing.
-Kubernetes converges *if you re-apply the same manifest*. A payment API dedupes *if
-you resend the same key*.
+Kubernetes converges *if you re-apply the same manifest*. A GitHub integration avoids
+duplicates *if it reconciles authoritative state before creating another issue*.
 
 LLM agents are structurally weak here. A retry is a fresh generation. Nothing makes
 key reuse salient — no compiler enforces it, no type error fires, and "generate a
@@ -80,10 +80,9 @@ success cannot override the ledger.
 
 | Pack | Workflow | Injected ambiguity | Duplicate effect |
 |---|---|---|---|
-| 01 | Payment refund | Response lost after ledger commit | Customer refunded twice |
-| 02 | GitHub issue creation | Response lost after issue created | Duplicate issue filed |
-| 03 | Production deployment | Control-plane response lost after start | Release deployed twice |
-| 04 | Incident notification | Delivery ack lost after post | On-call paged twice |
+| 01 | GitHub issue creation | Response lost after issue created | Duplicate issue filed |
+| 02 | Production deployment | Control-plane response lost after start | Release deployed twice |
+| 03 | Incident notification | Delivery ack lost after post | On-call paged twice |
 
 Each pack declares its own write action, reconciliation action, authoritative
 resource, and invariant evidence, running through the same effect ledger and adapter

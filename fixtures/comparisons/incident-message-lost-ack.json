@@ -39,7 +39,7 @@
       "verify-before-repeat-write"
     ],
     "label": "The incident update sent. Delivery confirmation vanished.",
-    "number": "04",
+    "number": "03",
     "operation": {
       "commitTitle": "Incident update is posted",
       "effectLabel": "message",

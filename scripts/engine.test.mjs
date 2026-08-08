@@ -116,6 +116,6 @@ try {
   assert.match(gatedIssue.result.label, /failed the clean task/);
 } finally { globalThis.fetch = originalFetch; }
 
-const fixture = await readFile(path.join(root, "fixtures", "comparisons", "refund-lost-ack.json"), "utf8");
+const fixture = await readFile(path.join(root, "fixtures", "comparisons", "github-issue-lost-ack.json"), "utf8");
 assert.equal(stableStringify(comparison), fixture, "comparison fixture must be byte-stable");
 console.log("HAVOC engine valid: clean/faulted control, identical injection, capability/sturdiness separation, evidence, and drift-free comparison import.");
