@@ -1,4 +1,4 @@
 # Local credentials
 .env.local
 .env
-
+pages-dist/

@@ -32,11 +32,14 @@ jobs:
       - name: Build replay fixtures
         run: npm run build
 
+      - name: Build browser artifact
+        run: node scripts/build-pages.mjs
+
       - name: Upload replay lab
         if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v4
         with:
-          path: apps/replay
+          path: pages-dist
 
   deploy:
     if: github.event_name == 'push'
