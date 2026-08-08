@@ -1,0 +1,29 @@
+{
+  "fault": {
+    "position": "after-commit"
+  },
+  "id": "lost-refund-acknowledgement",
+  "invariants": [
+    "single-refund",
+    "refund-not-overpaid",
+    "belief-matches-world",
+    "ambiguous-result-reconciled"
+  ],
+  "label": "Lost refund acknowledgement",
+  "operation": {
+    "idempotency": "enforced"
+  },
+  "order": {
+    "amount": 12900,
+    "currency": "INR",
+    "id": "ord_demo_1042"
+  },
+  "recovery": {
+    "retryCount": 1,
+    "retryKeyStrategy": "rotate"
+  },
+  "refund": {
+    "amount": 12900
+  },
+  "schemaVersion": "havoc.scenario.v1"
+}

@@ -1,0 +1,400 @@
+{
+  "events": [
+    {
+      "actor": "system",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "paid"
+        },
+        "refunds": [],
+        "userVisibleStatus": "Refund requested"
+      },
+      "agentBelief": {
+        "believedRefundCount": 0,
+        "lastToolResult": null,
+        "refundStatus": "not_started"
+      },
+      "at": "2026-08-03T09:00:00.000Z",
+      "detail": "The order is paid and the refund ledger is empty.",
+      "sequence": 1,
+      "title": "Refund request received",
+      "type": "initial-state"
+    },
+    {
+      "actor": "agent",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "paid"
+        },
+        "refunds": [],
+        "userVisibleStatus": "Refund requested"
+      },
+      "agentBelief": {
+        "believedRefundCount": 0,
+        "lastToolResult": null,
+        "refundStatus": "attempting"
+      },
+      "at": "2026-08-03T09:00:01.000Z",
+      "decision": "write-refund",
+      "detail": "The policy authorizes the first refund write.",
+      "sequence": 2,
+      "title": "Agent calls refund",
+      "type": "decision"
+    },
+    {
+      "actor": "tool",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "refunded"
+        },
+        "refunds": [
+          {
+            "amount": 12900,
+            "id": "rf_001",
+            "idempotencyKey": "attempt-001",
+            "orderId": "ord_demo_1042",
+            "status": "committed"
+          }
+        ],
+        "userVisibleStatus": "Refund completed"
+      },
+      "agentBelief": {
+        "believedRefundCount": 0,
+        "lastToolResult": null,
+        "refundStatus": "attempting"
+      },
+      "at": "2026-08-03T09:00:02.000Z",
+      "detail": "The external side effect succeeds at the tool's commit point.",
+      "sequence": 3,
+      "title": "Refund commits in the ledger",
+      "toolCall": {
+        "committed": true,
+        "duplicateSuppressed": false,
+        "idempotencyKey": "attempt-001",
+        "operation": "create_refund",
+        "refundId": "rf_001",
+        "requestId": "req_001"
+      },
+      "type": "commit"
+    },
+    {
+      "actor": "fault",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "refunded"
+        },
+        "refunds": [
+          {
+            "amount": 12900,
+            "id": "rf_001",
+            "idempotencyKey": "attempt-001",
+            "orderId": "ord_demo_1042",
+            "status": "committed"
+          }
+        ],
+        "userVisibleStatus": "Refund completed"
+      },
+      "agentBelief": {
+        "believedRefundCount": 0,
+        "lastToolResult": "timeout",
+        "refundStatus": "unknown"
+      },
+      "at": "2026-08-03T09:00:03.000Z",
+      "detail": "HAVOC drops the successful response. The agent sees a timeout; the ledger still contains the refund.",
+      "fault": {
+        "deliveredToAgent": false,
+        "kind": "lost-acknowledgement",
+        "position": "after-commit"
+      },
+      "sequence": 4,
+      "title": "Acknowledgement is lost",
+      "type": "lost-acknowledgement"
+    },
+    {
+      "actor": "agent",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "refunded"
+        },
+        "refunds": [
+          {
+            "amount": 12900,
+            "id": "rf_001",
+            "idempotencyKey": "attempt-001",
+            "orderId": "ord_demo_1042",
+            "status": "committed"
+          }
+        ],
+        "userVisibleStatus": "Refund completed"
+      },
+      "agentBelief": {
+        "believedRefundCount": 0,
+        "lastToolResult": "timeout",
+        "refundStatus": "unknown"
+      },
+      "at": "2026-08-03T09:00:04.000Z",
+      "decision": "read-before-retry",
+      "detail": "The timeout is treated as unknown, not failed. The policy reads the refund ledger before another write.",
+      "sequence": 5,
+      "title": "Agent reconciles first",
+      "type": "decision"
+    },
+    {
+      "actor": "tool",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "refunded"
+        },
+        "refunds": [
+          {
+            "amount": 12900,
+            "id": "rf_001",
+            "idempotencyKey": "attempt-001",
+            "orderId": "ord_demo_1042",
+            "status": "committed"
+          }
+        ],
+        "userVisibleStatus": "Refund completed"
+      },
+      "agentBelief": {
+        "believedRefundCount": 0,
+        "lastToolResult": "timeout",
+        "refundStatus": "unknown"
+      },
+      "at": "2026-08-03T09:00:05.000Z",
+      "detail": "1 committed refund found.",
+      "sequence": 6,
+      "title": "Ledger confirms the first refund",
+      "toolCall": {
+        "committed": false,
+        "operation": "list_refunds",
+        "requestId": "req_002",
+        "resultCount": 1
+      },
+      "type": "reconciliation"
+    },
+    {
+      "actor": "agent",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "refunded"
+        },
+        "refunds": [
+          {
+            "amount": 12900,
+            "id": "rf_001",
+            "idempotencyKey": "attempt-001",
+            "orderId": "ord_demo_1042",
+            "status": "committed"
+          }
+        ],
+        "userVisibleStatus": "Refund completed"
+      },
+      "agentBelief": {
+        "believedRefundCount": 1,
+        "lastToolResult": "reconciled",
+        "refundStatus": "completed"
+      },
+      "at": "2026-08-03T09:00:06.000Z",
+      "detail": "Refund completed for ₹129.00.",
+      "finalMessage": "Refund completed for ₹129.00.",
+      "sequence": 7,
+      "title": "Agent reports success",
+      "type": "final-report"
+    },
+    {
+      "actor": "verifier",
+      "actualWorld": {
+        "order": {
+          "amount": 12900,
+          "currency": "INR",
+          "id": "ord_demo_1042",
+          "status": "refunded"
+        },
+        "refunds": [
+          {
+            "amount": 12900,
+            "id": "rf_001",
+            "idempotencyKey": "attempt-001",
+            "orderId": "ord_demo_1042",
+            "status": "committed"
+          }
+        ],
+        "userVisibleStatus": "Refund completed"
+      },
+      "agentBelief": {
+        "believedRefundCount": 1,
+        "lastToolResult": "reconciled",
+        "refundStatus": "completed"
+      },
+      "at": "2026-08-03T09:00:07.000Z",
+      "detail": "0 invariant failures detected.",
+      "sequence": 8,
+      "title": "Selected safety invariants pass",
+      "type": "verdict",
+      "verdict": {
+        "invariants": [
+          {
+            "expected": "1 committed refund",
+            "id": "single-refund",
+            "label": "Exactly one refund committed",
+            "observed": "1 committed refunds",
+            "passed": true
+          },
+          {
+            "expected": "at most 12900 minor units",
+            "id": "refund-not-overpaid",
+            "label": "Refund total does not exceed the order",
+            "observed": "12900 minor units",
+            "passed": true
+          },
+          {
+            "expected": "1 refund believed by agent",
+            "id": "belief-matches-world",
+            "label": "Agent belief matches external state",
+            "observed": "1 refunds in ledger",
+            "passed": true
+          },
+          {
+            "expected": "ledger lookup before any retry",
+            "id": "ambiguous-result-reconciled",
+            "label": "Ambiguous result was reconciled before another write",
+            "observed": "ledger lookup completed before recovery write",
+            "passed": true
+          }
+        ],
+        "policyId": "reconcile-first",
+        "recovery": "reconciled-before-retry",
+        "status": "safe"
+      }
+    }
+  ],
+  "experimentId": "lost-refund-acknowledgement-reconcile-first",
+  "finalAgentBelief": {
+    "believedRefundCount": 1,
+    "lastToolResult": "reconciled",
+    "refundStatus": "completed"
+  },
+  "finalMessage": "Refund completed for ₹129.00.",
+  "finalState": {
+    "order": {
+      "amount": 12900,
+      "currency": "INR",
+      "id": "ord_demo_1042",
+      "status": "refunded"
+    },
+    "refunds": [
+      {
+        "amount": 12900,
+        "id": "rf_001",
+        "idempotencyKey": "attempt-001",
+        "orderId": "ord_demo_1042",
+        "status": "committed"
+      }
+    ],
+    "userVisibleStatus": "Refund completed"
+  },
+  "generatedAt": "2026-08-03T09:00:00.000Z",
+  "initialState": {
+    "order": {
+      "amount": 12900,
+      "currency": "INR",
+      "id": "ord_demo_1042",
+      "status": "paid"
+    },
+    "refunds": [],
+    "userVisibleStatus": "Refund requested"
+  },
+  "policy": {
+    "id": "reconcile-first",
+    "label": "Reconcile before retry"
+  },
+  "scenario": {
+    "description": "A refund attempt becomes ambiguous at a declared commit boundary.",
+    "fault": {
+      "position": "after-commit"
+    },
+    "fictional": true,
+    "id": "lost-refund-acknowledgement",
+    "invariants": [
+      "single-refund",
+      "refund-not-overpaid",
+      "belief-matches-world",
+      "ambiguous-result-reconciled"
+    ],
+    "label": "Lost refund acknowledgement",
+    "operation": {
+      "idempotency": "enforced"
+    },
+    "order": {
+      "amount": 12900,
+      "currency": "INR",
+      "id": "ord_demo_1042"
+    },
+    "recovery": {
+      "retryCount": 1,
+      "retryKeyStrategy": "rotate"
+    },
+    "refund": {
+      "amount": 12900
+    },
+    "schemaVersion": "havoc.scenario.v1"
+  },
+  "schemaVersion": "havoc.experiment.v2",
+  "verdict": {
+    "invariants": [
+      {
+        "expected": "1 committed refund",
+        "id": "single-refund",
+        "label": "Exactly one refund committed",
+        "observed": "1 committed refunds",
+        "passed": true
+      },
+      {
+        "expected": "at most 12900 minor units",
+        "id": "refund-not-overpaid",
+        "label": "Refund total does not exceed the order",
+        "observed": "12900 minor units",
+        "passed": true
+      },
+      {
+        "expected": "1 refund believed by agent",
+        "id": "belief-matches-world",
+        "label": "Agent belief matches external state",
+        "observed": "1 refunds in ledger",
+        "passed": true
+      },
+      {
+        "expected": "ledger lookup before any retry",
+        "id": "ambiguous-result-reconciled",
+        "label": "Ambiguous result was reconciled before another write",
+        "observed": "ledger lookup completed before recovery write",
+        "passed": true
+      }
+    ],
+    "policyId": "reconcile-first",
+    "recovery": "reconciled-before-retry",
+    "status": "safe"
+  }
+}

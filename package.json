@@ -1,0 +1,14 @@
+{
+  "name": "havoc-side-effect-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/generate-fixtures.mjs",
+    "test": "node scripts/engine.test.mjs",
+    "dev": "node scripts/serve.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Compare how two agents survive the same operational failure.">
+  <title>HAVOC — Agent robustness arena</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="mark">H</span><span>HAVOC</span><small>ROBUSTNESS ARENA</small></a>
+    <div class="scope" id="runner-scope"><span></span> NO KEY · FICTIONAL WORLD · DETERMINISTIC</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">CONTROLLED AGENT FAILURE INJECTION</p>
+      <h1>Which agent survives when<br><em>success looks like failure?</em></h1>
+      <p class="dek">Two agents receive the same task, world and fault. HAVOC measures what they finish, what they break, and whether they recover from evidence instead of assumption.</p>
+    </section>
+
+    <section class="launch" aria-labelledby="launch-title">
+      <div class="launch-head">
+        <div><span>ONE CONTROLLED MATCH</span><h2 id="launch-title">Choose the candidates</h2></div>
+        <div class="mode-switch" role="group" aria-label="Runner mode"><button class="active" data-mode="reference">INSTANT REFERENCE</button><button data-mode="live" disabled title="Discovering available free models…">LIVE OPENROUTER</button></div>
+      </div>
+      <div class="matchup">
+        <label class="choice agent-a"><span>AGENT A</span><select id="agent-a"></select><small id="agent-a-description"></small></label>
+        <div class="versus">VS</div>
+        <label class="choice agent-b"><span>AGENT B</span><select id="agent-b"></select><small id="agent-b-description"></small></label>
+      </div>
+      <label class="benchmark-choice"><span>BENCHMARK PACK</span><select id="benchmark"></select><strong id="benchmark-task"></strong><small id="benchmark-fault"></small></label>
+      <div class="launch-foot">
+        <div class="run-status" id="run-status" role="status"><b>READY</b><span>No API key. No real payment. The reference result is generated locally.</span></div>
+        <button class="run-button" id="run-havoc"><span>▶</span> RUN HAVOC</button>
+      </div>
+    </section>
+
+    <section class="protocol" aria-label="Experiment protocol">
+      <div><b>01</b><span>Establish each agent's clean capability</span></div>
+      <div><b>02</b><span>Inject the same fault after the same commit</span></div>
+      <div><b>03</b><span>Verify actual state, not the final claim</span></div>
+      <div><b>04</b><span>Measure degradation and recovery</span></div>
+    </section>
+
+    <section class="results" id="results" hidden aria-live="polite">
+      <div class="result-head">
+        <div><p class="eyebrow">SCENARIO-SPECIFIC RESULT</p><h2 id="result-title"></h2><p id="result-basis"></p></div>
+        <div class="result-actions"><button id="replay-all">▶ REPLAY FAULT</button><a id="export-json" download="havoc.comparison.json">COMPARISON.JSON ↓</a><a id="export-html" download="havoc.replay.html">PORTABLE REPLAY ↓</a><button id="import-button">OPEN COMPARISON</button><input id="import-file" type="file" accept=".json,application/json"></div>
+      </div>
+
+      <div class="scoreboard">
+        <article class="score-card" id="score-a"><header><span>AGENT A</span><h3 id="name-a"></h3></header><div class="scores"><div><small>CLEAN CAPABILITY</small><strong id="capability-a"></strong></div><div><small>FAULT STURDINESS</small><strong id="sturdiness-a"></strong></div><div><small>DEGRADATION</small><strong id="degradation-a"></strong></div></div><p id="summary-a"></p></article>
+        <article class="score-card" id="score-b"><header><span>AGENT B</span><h3 id="name-b"></h3></header><div class="scores"><div><small>CLEAN CAPABILITY</small><strong id="capability-b"></strong></div><div><small>FAULT STURDINESS</small><strong id="sturdiness-b"></strong></div><div><small>DEGRADATION</small><strong id="degradation-b"></strong></div></div><p id="summary-b"></p></article>
+      </div>
+
+      <div class="replay-deck">
+        <div class="replay-head"><div><span>FAULTED TRIAL REPLAY</span><h2 id="phase-title">Identical world loaded</h2></div><div class="playback"><button id="previous" aria-label="Previous phase">←</button><button id="play">▶ PLAY</button><button id="next" aria-label="Next phase">→</button><strong id="phase-count">01 / 07</strong></div></div>
+        <div class="fault-marker" id="fault-marker"><span>HAVOC INJECTION</span><strong id="fault-label"></strong></div>
+        <div class="lanes">
+          <article class="lane lane-a"><header><span>AGENT A</span><b id="lane-name-a"></b></header><div class="event-kind" id="kind-a"></div><h3 id="event-a"></h3><p id="detail-a"></p><div class="state"><div><small>AGENT BELIEVES</small><strong id="belief-a"></strong></div><div><small>AUTHORITATIVE STATE</small><strong id="world-a"></strong></div></div></article>
+          <article class="lane lane-b"><header><span>AGENT B</span><b id="lane-name-b"></b></header><div class="event-kind" id="kind-b"></div><h3 id="event-b"></h3><p id="detail-b"></p><div class="state"><div><small>AGENT BELIEVES</small><strong id="belief-b"></strong></div><div><small>AUTHORITATIVE STATE</small><strong id="world-b"></strong></div></div></article>
+        </div>
+        <div class="phase-rail" id="phase-rail"></div>
+      </div>
+
+      <section class="evidence" aria-labelledby="evidence-title"><div><p class="eyebrow">EXTERNAL-STATE VERDICT</p><h2 id="evidence-title">What actually broke?</h2><p>Final prose never decides the result. Authoritative state and declared invariants do.</p></div><div class="evidence-grid" id="evidence-grid"></div></section>
+    </section>
+
+    <section class="adapters" aria-labelledby="adapter-title"><div><p class="eyebrow">RUNNER BOUNDARY</p><h2 id="adapter-title">One experiment. Different agent adapters.</h2></div><div class="adapter-grid"><article><b class="live">LIVE</b><h3>Reference agents</h3><p>Bundled deterministic candidates make the public benchmark instant and reproducible.</p></article><article><b class="live">LIVE · LOCAL SERVER</b><h3>OpenRouter / API</h3><p>HAVOC owns the agent loop, instrumented tools and sandbox. OpenRouter supplies inference; the server-held key never enters browser artifacts.</p></article><article><b>LOCAL RUNNER · FUTURE</b><h3>Codex / Claude CLI</h3><p>An isolated local process adapter will launch authenticated CLIs, proxy supported effects and return the same comparison schema.</p></article></div></section>
+  </main>
+  <footer><span>HAVOC / COMPARATIVE AGENT ROBUSTNESS</span><span>BENCHMARK RESULTS ARE SCENARIO-SPECIFIC, NOT UNIVERSAL RANKINGS</span></footer>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
