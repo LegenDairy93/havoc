@@ -1,0 +1,4 @@
+const ALLOWED=new Set(["https://legendairy93.github.io","http://127.0.0.1:4174","http://localhost:4174"]);
+export function headers(request:Request){const origin=request.headers.get("origin")||"";return {"Access-Control-Allow-Origin":ALLOWED.has(origin)?origin:"https://legendairy93.github.io","Access-Control-Allow-Methods":"GET,POST,OPTIONS","Access-Control-Allow-Headers":"Content-Type","Cache-Control":"no-store","Vary":"Origin"}}
+export function json(request:Request,body:unknown,status=200){return Response.json(body,{status,headers:headers(request)})}
+export function clean(error:unknown){return String(error instanceof Error?error.message:"Runner failed").replace(/sk-or-[A-Za-z0-9_-]+/g,"[REDACTED]").slice(0,500)}

@@ -1,0 +1,6 @@
+import { clean, headers, json } from "../../../lib/http";
+// @ts-ignore bundled JavaScript runner
+import { fetchFreeModels, runLiveComparison } from "../../../lib/runner/openrouter.js";
+let active=false;
+export function OPTIONS(request:Request){return new Response(null,{status:204,headers:headers(request)})}
+export async function POST(request:Request){const key=process.env.OPENROUTER_API_KEY;if(!key)return json(request,{error:"Live models are not configured."},503);if(active)return json(request,{error:"Another live match is running. Try again shortly."},429);active=true;try{const text=await request.text();if(text.length>8192)throw new Error("Request is too large.");const input=JSON.parse(text||"{}");const allowed=await fetchFreeModels(key,{signal:AbortSignal.timeout(20000)});const ids=new Set(allowed.map((model:any)=>model.id));if(!ids.has(input.modelA)||!ids.has(input.modelB))throw new Error("Choose two currently available free models.");const result=await runLiveComparison({apiKey:key,benchmarkId:input.benchmarkId,modelA:input.modelA,modelB:input.modelB,signal:AbortSignal.timeout(120000)});return json(request,result)}catch(error){return json(request,{error:clean(error)},400)}finally{active=false}}
